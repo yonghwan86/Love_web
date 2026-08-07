@@ -68,3 +68,14 @@ wiggle_web에서 파생된 신규 제품 컨셉. **아직 기획 단계이며 �
 
 학대, 방임, 결손 가정, "소통 못 하는 아빠", "사랑이 부족한 부모".
 사용자를 결핍으로 규정하면 아무도 쓰지 않는다. 문제는 마음이 아니라 **레퍼토리와 시간**이다.
+
+## 실행 방법
+
+```powershell
+npm.cmd install
+npm.cmd run dev        # http://localhost:5173
+npm.cmd run build      # typecheck + 프로덕션 빌드 (dist/)
+```
+
+- 무궁화꽃 판정은 카메라 권한이 필요하다. 권한이 거부되면 자동으로 수동 판정 모드(술래의 눈)로 진행된다.
+- 폰 실기기 테스트는 HTTPS가 필요하다(LAN http에서는 getUserMedia 차단). 배포 후 그 URL을 NFC 스티커에 굽는다.
