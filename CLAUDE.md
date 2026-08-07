@@ -1,4 +1,4 @@
-# 사랑이 (sarang_web) — Claude Code 작업 규칙
+# 사랑이 (Love_web) — Claude Code 작업 규칙
 
 가족 놀이 플랫폼 "사랑이"의 독립 저장소다. 제품 정의·화면·원칙은 [README.md](README.md)와 [docs/01-phase1-spec.md](docs/01-phase1-spec.md)를 먼저 읽는다.
 
