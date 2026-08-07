@@ -4,7 +4,7 @@
 
 ## 프로젝트 경계
 
-- 작업 저장소는 `C:\Users\user\Desktop\Project\sarang_web`이다.
+- 작업 저장소는 `C:\Users\user\Desktop\Project\Love_web`이다.
 - `wiggle_web`, `wiggle_draw`는 **읽기 전용 참고 자료**다. 코드를 참조하되 수정하지 않고, 통째로 복사하지 않는다.
 - 비밀값(.env*, API 키, 토큰)을 읽어 출력하거나 커밋하지 않는다.
 
