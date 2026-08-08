@@ -1,9 +1,11 @@
 // 사랑이 — 화면 상태 기계.
 // 원칙(스펙 5절): 사랑이는 놀이가 정해진 뒤에만 등장한다. 놀이 선택 화면까지는 캐릭터가 없다.
 import { useState } from "react";
-import { GAME_META, isNewGame, type Adult, type GameId } from "./lib/state";
+import { GAME_META, isNewGame, type Adult, type GameId, type GameKind } from "./lib/state";
 import { speak, stopSpeak } from "./lib/tts";
 import { Mugunghwa } from "./screens/Mugunghwa";
+import { BodyTalk } from "./screens/BodyTalk";
+import { WordChain } from "./screens/WordChain";
 import { RolePlay } from "./screens/RolePlay";
 import { AfterPlay } from "./screens/AfterPlay";
 import { Garden } from "./screens/Garden";
@@ -36,15 +38,29 @@ export function App() {
     setScreen("gate");
   }
 
+  // 사랑이의 등장 대사·역할 — 놀이가 정해진 뒤에야 정해진다
+  function introFor(game: GameId, adultCount: number) {
+    if (game === "mugunghwa") {
+      return { face: "host", prop: "🎤", chip: "🎤 오늘 사랑이는 사회자", jsx: <>“무궁화꽃이 피었습니다!<br />구호는 내가 외칠게.<br /><b>술래는 누가 할래?</b>”</>, tts: "무궁화꽃이 피었습니다, 하자! 구호는 내가 외칠게. 술래는 누가 할래?" };
+    }
+    if (game === "bodytalk") {
+      return { face: "host", prop: "🎤", chip: "🎤 오늘 사랑이는 사회자", jsx: <>“몸으로 말해요!<br />문제는 내가 낼게.<br /><b>입으로 말하면 반칙이야!</b>”</>, tts: "몸으로 말해요, 하자! 문제는 내가 낼게. 입으로 말하면 반칙이야!" };
+    }
+    // 끝말잇기 — 사람이 셋 이상이면 사랑이는 놀이 친구 자리를 비운다 (사람이 먼저)
+    if (adultCount >= 2) {
+      return { face: "host", prop: "🎤", chip: "🎤 오늘 사랑이는 사회자", jsx: <>“어른이 두 명이네!<br />그럼 나는 구경할게.<br /><b>셋이서 돌아가면서 해요!</b>”</>, tts: "어른이 두 명이네! 그럼 나는 구경할게. 셋이서 돌아가면서 해요!" };
+    }
+    return { face: "", prop: "🙋", chip: "🙋 오늘 사랑이는 놀이 친구", jsx: <>“끝말잇기!<br />나도 껴 줘.<br /><b>아이부터 시작하자!</b>”</>, tts: "끝말잇기, 하자! 나도 껴 줘. 아이부터 시작하자!" };
+  }
+
   function pickGame(game: GameId) {
     setSession({ adults, game, startedAt: Date.now() });
-    if (game === "mugunghwa") {
-      setScreen("intro");
-      // 사랑이의 첫 등장 — 역할(사회자)을 입고 나온다
-      void speak("무궁화꽃이 피었습니다, 하자! 구호는 내가 외칠게. 술래는 누가 할래?");
-    } else {
+    if (game === "hospital" || game === "police") {
       // 역할놀이의 사랑이는 가이드 — 아이 앞에 나타나지 않으므로 소개 화면 없이 어른 전용 게이트로 간다
       setScreen("play");
+    } else {
+      setScreen("intro");
+      void speak(introFor(game, adults.length).tts);
     }
   }
 
@@ -98,14 +114,14 @@ export function App() {
   }
 
   if (screen === "gamepick") {
-    const games: GameId[] = ["mugunghwa", "hospital", "police"];
+    const games: GameId[] = ["mugunghwa", "bodytalk", "wordchain", "hospital", "police"];
     return (
       <main className="screen">
         <div className="topline"><span>2 / 2</span><button onClick={() => setScreen("participants")}>뒤로</button></div>
         <h1 className="title">뭐 하고 놀까?</h1>
         <p className="sub">아이가 고르게 해 주세요</p>
         <div className="grow">
-          {(["몸놀이", "되어 보는 놀이"] as const).map((kind) => (
+          {(["몸놀이", "말놀이", "되어 보는 놀이"] as GameKind[]).map((kind) => (
             <div key={kind}>
               <div className="cat">{kind}</div>
               <div className="stack">
@@ -127,15 +143,14 @@ export function App() {
   }
 
   if (screen === "intro" && session) {
+    const intro = introFor(session.game, session.adults.length);
     return (
       <main className="screen">
         <div className="topline"><span>사랑이 등장</span><button onClick={goHome}>처음으로</button></div>
         <div className="grow" style={{ display: "grid", alignContent: "center" }}>
-          <div className="loveface host">💗<span className="prop">🎤</span></div>
-          <span className="rolechip">🎤 오늘 사랑이는 사회자</span>
-          <div className="bubble">
-            “무궁화꽃이 피었습니다!<br />구호는 내가 외칠게.<br /><b>술래는 누가 할래?</b>”
-          </div>
+          <div className={`loveface ${intro.face}`}>💗<span className="prop">{intro.prop}</span></div>
+          <span className="rolechip">{intro.chip}</span>
+          <div className="bubble">{intro.jsx}</div>
         </div>
         <button className="big love" onClick={() => { stopSpeak(); setScreen("play"); }}>좋아!</button>
       </main>
@@ -143,22 +158,17 @@ export function App() {
   }
 
   if (screen === "play" && session) {
+    const done = (shot: string | null = null) => { setPhoto(shot); setScreen("after"); };
     if (session.game === "mugunghwa") {
-      return (
-        <Mugunghwa
-          adults={session.adults}
-          startedAt={session.startedAt}
-          onFinish={(shot) => { setPhoto(shot); setScreen("after"); }}
-        />
-      );
+      return <Mugunghwa adults={session.adults} startedAt={session.startedAt} onFinish={done} />;
     }
-    return (
-      <RolePlay
-        game={session.game}
-        onFinish={() => { setPhoto(null); setScreen("after"); }}
-        onQuit={goHome}
-      />
-    );
+    if (session.game === "bodytalk") {
+      return <BodyTalk adults={session.adults} onFinish={() => done()} />;
+    }
+    if (session.game === "wordchain") {
+      return <WordChain adults={session.adults} onFinish={() => done()} />;
+    }
+    return <RolePlay game={session.game} onFinish={() => done()} onQuit={goHome} />;
   }
 
   if (screen === "after" && session) {

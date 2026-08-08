@@ -31,6 +31,8 @@ export function AfterPlay({ game, adults, photo, onDone }: Props) {
   const [quote, setQuote] = useState("");
   const [stamped, setStamped] = useState(false);
   const alreadyWatered = useRef(!canWaterToday()).current;
+  // 세션 시작 시점의 꽃 개수 — 이번 세션 기록은 이 캡슐에 담긴다 (개화해도 이번 기록은 그 꽃의 마지막 장)
+  const flowerIndex = useRef(loadPlant().flowers.length).current;
   const holdTimer = useRef<number | null>(null);
 
   useEffect(() => stopSpeak, []);
@@ -81,6 +83,7 @@ export function AfterPlay({ game, adults, photo, onDone }: Props) {
       quote: quote.trim(),
       stamped,
       photo: photo ?? undefined,
+      flowerIndex,
     });
     onDone();
   }

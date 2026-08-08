@@ -2,10 +2,13 @@
 // 아이 실명·성별은 어디에도 저장하지 않는다 (제품 불변 원칙).
 
 export type Adult = "엄마" | "아빠" | "할머니" | "할아버지";
-export type GameId = "mugunghwa" | "hospital" | "police";
+export type GameId = "mugunghwa" | "bodytalk" | "wordchain" | "hospital" | "police";
+export type GameKind = "몸놀이" | "말놀이" | "되어 보는 놀이";
 
-export const GAME_META: Record<GameId, { emoji: string; title: string; kind: "몸놀이" | "되어 보는 놀이" }> = {
+export const GAME_META: Record<GameId, { emoji: string; title: string; kind: GameKind }> = {
   mugunghwa: { emoji: "🌺", title: "무궁화꽃이 피었습니다", kind: "몸놀이" },
+  bodytalk: { emoji: "🕺", title: "몸으로 말해요", kind: "몸놀이" },
+  wordchain: { emoji: "🔤", title: "끝말잇기", kind: "말놀이" },
   hospital: { emoji: "🩺", title: "병원놀이", kind: "되어 보는 놀이" },
   police: { emoji: "🚓", title: "경찰놀이", kind: "되어 보는 놀이" },
 };
@@ -18,6 +21,8 @@ export type PlayRecord = {
   quote: string;
   stamped: boolean;
   photo?: string;
+  /** 이 기록이 속한 꽃(기록 캡슐). 세션 시작 시점의 flowers.length — 개화 전 기록은 그 꽃에 담긴다. */
+  flowerIndex?: number;
 };
 
 type PlantStore = {
