@@ -1,7 +1,8 @@
 // 사랑이 — 화면 상태 기계.
 // 원칙(스펙 5절): 사랑이는 놀이가 정해진 뒤에만 등장한다. 놀이 선택 화면까지는 캐릭터가 없다.
-import { useState } from "react";
+import { useRef, useState, type ChangeEvent } from "react";
 import { GAME_META, isNewGame, type Adult, type GameId, type GameKind } from "./lib/state";
+import { loadFamilyPhoto, saveFamilyPhoto } from "./lib/familyPhoto";
 import { speak, stopSpeak } from "./lib/tts";
 import { Mugunghwa } from "./screens/Mugunghwa";
 import { BodyTalk } from "./screens/BodyTalk";
@@ -30,6 +31,16 @@ export function App() {
   const [adults, setAdults] = useState<Adult[]>([]);
   const [session, setSession] = useState<Session | null>(null);
   const [photo, setPhoto] = useState<string | null>(null);
+  const [familyPhoto, setFamilyPhoto] = useState<string | null>(() => loadFamilyPhoto());
+  const photoInputRef = useRef<HTMLInputElement | null>(null);
+
+  async function onPhotoPicked(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // 같은 파일을 다시 골라도 change가 오게
+    if (!file) return;
+    const url = await saveFamilyPhoto(file);
+    if (url) setFamilyPhoto(url);
+  }
 
   function goHome() {
     stopSpeak();
@@ -68,8 +79,20 @@ export function App() {
     return (
       <main className="screen">
         <div className="topline"><span>사랑이</span><span>같이 논 시간이 꽃이 돼요</span></div>
-        <div className="grow" style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 18 }}>
-          <div className="keyring">🔑</div>
+        <div className="grow" style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 16 }}>
+          {familyPhoto ? (
+            <div className="famcard">
+              <img src={familyPhoto} alt="우리 가족 사진" />
+              <span className="keybadge">🔑</span>
+              <button className="famedit" onClick={() => photoInputRef.current?.click()}>📷 사진 바꾸기</button>
+            </div>
+          ) : (
+            <button className="famcard empty" onClick={() => photoInputRef.current?.click()}>
+              <i>📷</i>
+              <b>우리 가족 사진 넣기</b>
+              <small>첫 화면이 우리 집 대문이 돼요 · 사진은 이 폰에만 있어요</small>
+            </button>
+          )}
           <div>
             <h1 className="title center">키링을 폰 뒤에<br />톡, 하고 왔나요?</h1>
             <p className="sub center">아이가 열쇠를 가져오면 놀이 시간이에요</p>
@@ -79,6 +102,7 @@ export function App() {
           <button className="big love" onClick={() => setScreen("participants")}>놀이 열기</button>
           <button className="ghost" onClick={() => setScreen("garden")}>🌸 우리 정원 보기</button>
         </div>
+        <input ref={photoInputRef} type="file" accept="image/*" hidden onChange={onPhotoPicked} />
       </main>
     );
   }
