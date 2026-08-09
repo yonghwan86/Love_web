@@ -1,9 +1,12 @@
 // 무궁화꽃이 피었습니다 — 사랑이는 사회자(구호)와 심판(판정)만 맡는다.
 // 술래는 반드시 사람이다 (제품 불변 원칙: 놀이 안의 사람 역할을 뺏지 않는다).
 import { useEffect, useRef, useState } from "react";
-import { ADULT_THRESHOLD, CHILD_THRESHOLD, MotionJudge } from "../lib/motion";
+import { ADULT_THRESHOLD, CHILD_THRESHOLD, MotionJudge, SAMPLE_MS, SETTLE_MS, WATCH_MS } from "../lib/motion";
 import { speak, stopSpeak } from "../lib/tts";
 import type { Adult } from "../lib/state";
+
+// 실기기 튜닝용 실측 오버레이 — URL에 ?debug 를 붙였을 때만 보인다
+const DEBUG = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("debug");
 
 type Props = {
   adults: Adult[];
@@ -23,6 +26,7 @@ export function Mugunghwa({ adults, startedAt, onFinish }: Props) {
   const [manual, setManual] = useState(false);
   const [shout, setShout] = useState<Shout>(null);
   const [win, setWin] = useState(false);
+  const [debugStat, setDebugStat] = useState<{ live: number; max: number } | null>(null);
 
   const judgeRef = useRef<MotionJudge | null>(null);
   const previewRef = useRef<HTMLVideoElement | null>(null);
@@ -71,12 +75,21 @@ export function Mugunghwa({ adults, startedAt, onFinish }: Props) {
     setShout({ text: "멈춰!", tone: "plain" });
     let max = 0;
     if (judge?.active && !manual) {
+      // 구호가 끝나고 완전히 멈추기까지 한 박자(사람 반응 시간)는 봐준다 —
+      // 이 유예 없이 기준을 찍으면 멈추는 동작 자체가 차분으로 남아 계속 "들켰다"가 난다.
+      await sleep(SETTLE_MS);
+      if (dead(gen)) return;
       judge.setBaseline();
-      const until = Date.now() + 1600;
+      let prev = 0;
+      const until = Date.now() + WATCH_MS;
       while (Date.now() < until) {
-        await sleep(130);
+        await sleep(SAMPLE_MS);
         if (dead(gen)) return;
-        max = Math.max(max, judge.movementRatio());
+        const r = judge.movementRatio();
+        // 초점·노출이 튄 한 프레임으로 잡지 않는다 — 연속 2샘플이 같이 넘어야 인정
+        max = Math.max(max, Math.min(prev, r));
+        prev = r;
+        if (DEBUG) setDebugStat({ live: r, max });
       }
     } else {
       await sleep(1300);
@@ -202,6 +215,12 @@ export function Mugunghwa({ adults, startedAt, onFinish }: Props) {
       <div className="camwrap">
         <video ref={previewRef} playsInline muted />
         {!manual && <span className="camnote">● 움직임만 봄 · 저장 안 함</span>}
+        {DEBUG && debugStat && (
+          <span className="camnote" style={{ top: "auto", bottom: 10, textShadow: "0 1px 3px #000" }}>
+            지금 {debugStat.live.toFixed(3)} · 최대 {debugStat.max.toFixed(3)} · 기준{" "}
+            {(tagger !== "아이" ? CHILD_THRESHOLD : ADULT_THRESHOLD).toFixed(3)}
+          </span>
+        )}
         <span className="camtag">도전자: {challengerLabel}</span>
         {shout && (
           <div className={`shout${shout.tone === "alert" ? " alert" : shout.tone === "safe" ? " safe" : ""}`}>
