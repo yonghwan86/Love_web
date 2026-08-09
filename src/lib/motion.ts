@@ -6,9 +6,16 @@ const W = 96;
 const H = 72;
 const NOISE_FLOOR = 16; // 픽셀 밝기 차이가 이보다 작으면 카메라 노이즈로 본다
 
+// ── 실기기 튜닝 손잡이 — 전부 이 파일에서만 만진다 ──────────────────
 // 도전자가 어른이면 엄격, 아이면 관대 — 의도된 편애 (스펙 9절)
 export const ADULT_THRESHOLD = 0.035;
 export const CHILD_THRESHOLD = 0.12;
+/** 구호 끝 → 기준 프레임 촬영까지 유예. 사람 반응 시간(멈추는 동작)은 세지 않는다. */
+export const SETTLE_MS = 350;
+/** 기준 촬영 후 감시 창 길이. */
+export const WATCH_MS = 1500;
+/** 감시 창 안의 샘플 간격. */
+export const SAMPLE_MS = 130;
 
 export class MotionJudge {
   private video = document.createElement("video");
@@ -63,15 +70,19 @@ export class MotionJudge {
     this.baseline = this.frame();
   }
 
-  /** 기준 대비 달라진 픽셀 비율(0..1). */
+  /** 기준 대비 달라진 픽셀 비율(0..1). 화면 전체가 함께 밝아지는 자동 노출 변화는 움직임으로 세지 않는다. */
   movementRatio(): number {
     if (!this.baseline) return 0;
     const cur = this.frame();
+    const n = W * H;
+    let sum = 0;
+    for (let i = 0; i < n; i++) sum += cur[i] - this.baseline[i];
+    const shift = sum / n; // 자동 노출·화이트밸런스가 만드는 전역 밝기 이동분
     let moved = 0;
-    for (let i = 0; i < W * H; i++) {
-      if (Math.abs(cur[i] - this.baseline[i]) >= NOISE_FLOOR) moved++;
+    for (let i = 0; i < n; i++) {
+      if (Math.abs(cur[i] - this.baseline[i] - shift) >= NOISE_FLOOR) moved++;
     }
-    return moved / (W * H);
+    return moved / n;
   }
 
   /** 기록용 스냅샷 1장 (다운스케일 JPEG). 실패하면 null. */
