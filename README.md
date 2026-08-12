@@ -1,12 +1,14 @@
 # 사랑이 — 놀이마다 역할이 바뀌는 가족 AI
 
-wiggle_web에서 파생된 신규 제품 컨셉. **아직 기획 단계이며 코드 착수 전이다.**
+wiggle_web에서 파생된 신규 제품. **1차(놀이 5종)가 구현·배포돼 있다: https://love-web-cyan.vercel.app**
 
 | 문서 | 내용 |
 | --- | --- |
 | [mockup.html](docs/mockup.html) | 발표용 시각 목업 (브라우저로 열 것) |
 | [01-phase1-spec.md](docs/01-phase1-spec.md) | 1차 스펙 — 5~9세, 키링 NFC + 놀이별 역할 AI |
 | [02-phase2-plan.md](docs/02-phase2-plan.md) | 2차 계획 — 10~18세, 큰 화면 공유 (착수 안 함) |
+| [03-phase15-plan.md](docs/03-phase15-plan.md) | 1.5차 계획 — 멀티스크린 무대·PWA·제품 이름 (발표 뒤 착수) |
+| [mockup-multiscreen.html](docs/mockup-multiscreen.html) | 멀티스크린 흐름 시각 목업 |
 
 ## 한 줄 정의
 

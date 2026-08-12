@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사랑이 — 큰 화면(무대) 흐름 제안</title>
+<style>
+  :root{
+    --bg:#f6f2ec; --ink:#2a2118; --secondary:#7a6b5a; --border:#e0d5c5;
+    --soft:#eee7dc; --warm:#d3690f; --love:#e8546b; --host:#e8a33d;
+    --leaf:#5aa469; --water:#4fa8d8; --judge:#3fa06e;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  body{background:var(--bg); color:var(--ink);
+    font-family:"Segoe UI",Pretendard,"Malgun Gothic",sans-serif;
+    padding:28px 16px 60px; line-height:1.5}
+  .wrap{max-width:1180px; margin:0 auto}
+  h1{font-size:22px; margin-bottom:4px}
+  .sub{color:var(--secondary); font-size:14px; margin-bottom:26px}
+  .flow{display:flex; flex-wrap:wrap; gap:22px; justify-content:center}
+  .step{flex:1 1 340px; max-width:380px; background:#fff; border:1px solid var(--border);
+    border-radius:20px; padding:18px 16px 20px; position:relative}
+  .stepno{position:absolute; top:-14px; left:16px; background:var(--warm); color:#fff;
+    font-weight:700; font-size:13px; border-radius:999px; padding:4px 12px}
+  .step h2{font-size:16px; margin:8px 0 2px}
+  .step .cap{font-size:13px; color:var(--secondary); margin-bottom:14px}
+  /* TV frame */
+  .tv{background:#1d1a16; border-radius:12px; padding:10px 10px 16px; margin-bottom:10px}
+  .tv .screen{background:linear-gradient(180deg,#fdf8f0,#f8ead8); border-radius:6px;
+    aspect-ratio:16/9; display:flex; flex-direction:column; align-items:center;
+    justify-content:center; text-align:center; gap:6px; overflow:hidden}
+  .tv .stand{width:70px; height:5px; background:#3a352e; margin:8px auto 0; border-radius:3px}
+  .tv .big{font-size:34px}
+  .tv .line{font-size:15px; font-weight:800}
+  .tv .small{font-size:11px; color:var(--secondary)}
+  .tvlabel{font-size:11px; color:var(--secondary); text-align:center; margin-bottom:12px}
+  /* Phone frame */
+  .phone{width:150px; margin:0 auto; background:#1d1a16; border-radius:22px; padding:7px}
+  .phone .pscreen{background:var(--bg); border-radius:16px; padding:12px 9px 14px;
+    min-height:200px; display:flex; flex-direction:column; gap:8px; text-align:center}
+  .phone .ptitle{font-size:12.5px; font-weight:800; margin-top:4px}
+  .btn{border-radius:14px; padding:10px 6px; font-size:12px; font-weight:700;
+    border:1.5px solid var(--border); background:#fff}
+  .btn.primary{background:var(--warm); border-color:var(--warm); color:#fff}
+  .btn .tag{display:block; font-size:9.5px; font-weight:600; opacity:.85; margin-top:2px}
+  .badge{align-self:center; font-size:10px; background:var(--soft); color:var(--secondary);
+    border-radius:999px; padding:3px 9px}
+  .duo{display:flex; gap:10px; align-items:flex-start; justify-content:center}
+  .duo .phone{width:118px}
+  .duo .phone .pscreen{min-height:150px}
+  .arrowdown{ text-align:center; font-size:18px; color:var(--secondary); margin:2px 0}
+  /* note strip */
+  .strip{margin-top:30px; display:flex; flex-wrap:wrap; gap:14px}
+  .note{flex:1 1 300px; background:#fff; border:1px solid var(--border); border-radius:16px; padding:14px 16px}
+  .note h3{font-size:14px; margin-bottom:6px}
+  .note p, .note li{font-size:13px; color:var(--secondary)}
+  .note ul{padding-left:18px}
+  .note.ok{border-color:var(--leaf)}
+  .note.warn{border-color:var(--host)}
+  .k{color:var(--ink); font-weight:700}
+  @media (max-width:420px){ .duo{flex-direction:column; align-items:center} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🛋️ 키링 태그 → 거실 큰 화면이 무대가 되는 흐름 <span style="font-size:13px;color:var(--warm)">(Phase 1.5 제안)</span></h1>
+  <p class="sub">푸시로 "띄우는" 게 아니라, <b>미리 페어링된 큰 화면이 대기하다가 태그 순간 무대로 변신</b>합니다. 폰은 항상 입장문이자 리모컨.</p>
+
+  <div class="flow">
+    <!-- STEP 1 -->
+    <div class="step">
+      <div class="stepno">① 태그</div>
+      <h2>아이가 키링을 폰에 콕</h2>
+      <p class="cap">NFC는 태그된 폰에서 열립니다 (다른 기기로 직접 못 쏨) — 그래서 폰이 먼저 묻습니다.</p>
+      <div class="phone"><div class="pscreen">
+        <div class="badge">지유의 열쇠 🔑</div>
+        <div class="ptitle">어디서 놀까?</div>
+        <button class="btn primary">🛋️ 거실 화면에서<span class="tag">추천 · 켜져 있음 ✅</span></button>
+        <button class="btn">📱 이 폰에서<span class="tag">지금처럼</span></button>
+      </div></div>
+      <p class="cap" style="margin-top:10px">큰 화면이 대기 중이 아니면 이 질문 없이 <b>지금처럼 폰에서 바로</b> 시작 (현행 = 폴백).</p>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step">
+      <div class="stepno">② 무대 전환</div>
+      <h2>거실 화면이 즉시 무대로</h2>
+      <p class="cap">TV·패드에 미리 열어둔 대기 화면(정원)이 실시간 신호를 받고 놀이로 바뀝니다.</p>
+      <div class="tv"><div class="screen">
+        <div class="big">🎤</div>
+        <div class="line">무궁화꽃이 피었습니다!</div>
+        <div class="small">사랑이가 큰 화면에서 사회 · 판정 발표</div>
+      </div><div class="stand"></div></div>
+      <div class="tvlabel">거실 TV / 패드 / 노트북</div>
+      <div class="phone" style="width:126px"><div class="pscreen" style="min-height:150px">
+        <div class="ptitle">📷 나는 심판 카메라</div>
+        <p style="font-size:10.5px;color:var(--secondary)">컵에 기대 세워줘!<br>판정은 폰 안에서만 —<br>영상은 아무 데도 안 가요</p>
+        <div class="badge" style="background:#e8f4ec;color:var(--judge)">🟢 보는 중</div>
+      </div></div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step">
+      <div class="stepno">③ 물 주기</div>
+      <h2>정원은 가족 TV에서 자란다</h2>
+      <p class="cap">끝나면 큰 화면 가득 화분 — 아이는 폰(리모컨)으로 물을 꾹.</p>
+      <div class="tv"><div class="screen">
+        <div class="big">🪴💧</div>
+        <div class="line">물방울이 스며들었어…!</div>
+        <div class="small">우리 가족 정원 · 꽃 = 그날의 기록</div>
+      </div><div class="stand"></div></div>
+      <div class="tvlabel">거실 TV / 패드 / 노트북</div>
+      <div class="phone" style="width:126px"><div class="pscreen" style="min-height:120px">
+        <div class="ptitle">💧 꾹 눌러서 물 주기</div>
+        <button class="btn primary" style="border-radius:999px;padding:16px 6px">꾸욱—</button>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="strip">
+    <div class="note warn">
+      <h3>⚠️ "푸시로 띄우기"가 그대로는 안 되는 이유 (웹)</h3>
+      <ul>
+        <li>웹 푸시는 <span class="k">알림 배너까지만</span> — 어떤 플랫폼도 앱을 자동으로 전면에 못 띄웁니다. 누군가 눌러야 열려요.</li>
+        <li>아이패드는 <span class="k">홈 화면에 설치한 PWA만</span> 푸시 수신 가능.</li>
+        <li>스마트 TV 브라우저는 <span class="k">웹 푸시 자체가 없음</span> (네이티브 TV 앱 영역).</li>
+      </ul>
+    </div>
+    <div class="note ok">
+      <h3>✅ 그래서 뒤집기: 밀지 말고, 기다리게</h3>
+      <p><span class="k">가족 코드 6자리로 1회 페어링</span>한 큰 화면이 정원 화면으로 대기 → 태그 순간 실시간 채널로 깨어남. 카훗·잭박스·토니박스가 다 이 구조입니다. 어른 폰과 큰 화면의 역할 분담: <span class="k">폰 = 비밀·입력·카메라, 큰 화면 = 사랑이의 무대</span>.</p>
+    </div>
+    <div class="note">
+      <h3>🎁 오늘도 이미 되는 것</h3>
+      <p>같은 주소를 <span class="k">패드·노트북에서 열면 그대로 큰 화면 놀이</span>가 됩니다 (반응형 + 패드는 카메라도 있음). 동기화 없이 한 기기로 — 8/14 발표에서 "거실의 사랑이" 그림을 보여줄 최단 경로.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>
