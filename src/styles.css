@@ -1,4 +1,4 @@
-/* 사랑이 — 전역 스타일. 목업(docs/mockup.html)의 토큰을 그대로 쓴다. */
+/* 가온이 — 전역 스타일. 목업(docs/mockup.html)의 토큰을 그대로 쓴다. */
 :root {
   --bg: #f6f2ec;
   --ink: #2a2118;
@@ -127,7 +127,7 @@ input { font: inherit; }
 .gamerow span { font-size: 11px; color: var(--secondary); font-weight: 800; flex: 0 0 auto; }
 .gamerow span.new { color: #7c5cc4; }
 
-/* 사랑이 캐릭터 */
+/* 가온이 캐릭터 */
 .loveface {
   width: 110px;
   height: 110px;
