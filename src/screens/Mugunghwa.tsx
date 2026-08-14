@@ -1,4 +1,4 @@
-// 무궁화꽃이 피었습니다 — 사랑이는 사회자(구호)와 심판(판정)만 맡는다.
+// 무궁화꽃이 피었습니다 — 가온이는 사회자(구호)와 심판(판정)만 맡는다.
 // 술래는 반드시 사람이다 (제품 불변 원칙: 놀이 안의 사람 역할을 뺏지 않는다).
 import { useEffect, useRef, useState } from "react";
 import { ADULT_THRESHOLD, CHILD_THRESHOLD, MotionJudge, SAMPLE_MS, SETTLE_MS, WATCH_MS } from "../lib/motion";
@@ -157,7 +157,7 @@ export function Mugunghwa({ adults, startedAt, onFinish }: Props) {
       <main className="screen">
         <div className="topline"><span>🌺 무궁화꽃이 피었습니다</span></div>
         <h1 className="title center">술래는 누가 할까?</h1>
-        <p className="sub center">사랑이는 술래를 하지 않아요</p>
+        <p className="sub center">가온이는 술래를 하지 않아요</p>
         <div className="grow" style={{ display: "grid", alignContent: "center", gap: 14 }}>
           <div className="chips" style={{ gridTemplateColumns: `repeat(${Math.min(adults.length + 1, 3)}, 1fr)` }}>
             {adults.map((a) => (
@@ -171,7 +171,7 @@ export function Mugunghwa({ adults, startedAt, onFinish }: Props) {
             </button>
           </div>
           <button className="chip" disabled>
-            <i>💗</i>사랑이<small>술래는 못 해요</small>
+            <i>💗</i>가온이<small>술래는 못 해요</small>
           </button>
           <p className="notebox">술래가 구호를 듣는 동안, 반대편이 살금살금 다가가서 <b>등을 치면 승리</b>예요.</p>
         </div>
@@ -197,7 +197,7 @@ export function Mugunghwa({ adults, startedAt, onFinish }: Props) {
           <p className="notebox">
             📱 폰은 벽이나 컵에 기대 세워요 · 🏃 도전자는 방 반대쪽 · 🙈 술래({tagger})는 폰 옆에 서서 눈을 감아요
           </p>
-          <p className="notebox privacy">📸 사랑이는 <b>움직임만</b> 봐요 — 영상은 저장하지도, 보내지도 않아요</p>
+          <p className="notebox privacy">📸 가온이는 <b>움직임만</b> 봐요 — 영상은 저장하지도, 보내지도 않아요</p>
         </div>
         <button className="big" onClick={startPlay}>준비 끝, 시작!</button>
       </main>
@@ -209,7 +209,7 @@ export function Mugunghwa({ adults, startedAt, onFinish }: Props) {
   return (
     <main className="screen dark" style={{ paddingLeft: 12, paddingRight: 12 }}>
       <div className="topline">
-        <span>🎤 사회자 · 🔔 심판 — 사랑이</span>
+        <span>🎤 사회자 · 🔔 심판 — 가온이</span>
         <span>술래: {tagger}</span>
       </div>
       <div className="camwrap">
@@ -238,7 +238,7 @@ export function Mugunghwa({ adults, startedAt, onFinish }: Props) {
           <div className="boom">🎉</div>
           <b>{challengerLabel}가 {tagger} 등을 쳤다!</b>
           <small>
-            사랑이: “와, 진짜 빨랐어!”
+            가온이: “와, 진짜 빨랐어!”
             {elapsedMin >= 10 && <><br />약속한 10분이 지났어요 — 더 노는 건 자유!</>}
           </small>
           <div className="stack" style={{ marginTop: 14 }}>

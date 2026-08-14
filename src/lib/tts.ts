@@ -1,4 +1,4 @@
-// 사랑이 목소리 — Web Speech TTS 래퍼.
+// 가온이 목소리 — Web Speech TTS 래퍼.
 // iOS는 첫 사용자 제스처 이후에만 소리가 난다. 모든 발화는 버튼 탭 흐름 뒤에 온다.
 
 let koVoice: SpeechSynthesisVoice | null = null;

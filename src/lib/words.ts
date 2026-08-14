@@ -30,7 +30,7 @@ export const BODYTALK_WORDS: BodyWord[] = [
   { emoji: "🧹", word: "청소하기" },
 ];
 
-// 끝말잇기 — 첫 글자별 단어장. 사랑이 차례에 여기서 고른다.
+// 끝말잇기 — 첫 글자별 단어장. 가온이 차례에 여기서 고른다.
 // 다음 차례가 아이이므로, 아이가 잇기 쉬운 글자로 끝나는 단어를 우선한다.
 export const CHAIN_WORDS: Record<string, string[]> = {
   가: ["가방", "가위", "가족"],
@@ -80,8 +80,8 @@ export const CHAIN_WORDS: Record<string, string[]> = {
 // 아이가 잇기 쉬운 시작 글자 (단어장이 두텁고 아이가 아는 단어가 많은 글자)
 const EASY_STARTS = new Set(["가", "나", "바", "사", "아", "기", "구", "무", "수", "우", "모", "소", "오", "고", "토", "호"]);
 
-/** 사랑이의 다음 단어. 다음 차례(아이)가 잇기 쉬운 글자로 끝나는 단어를 우선한다. 없으면 null → 사랑이 패배. */
-export function sarangNextWord(prevWord: string, used: Set<string>): string | null {
+/** 가온이의 다음 단어. 다음 차례(아이)가 잇기 쉬운 글자로 끝나는 단어를 우선한다. 없으면 null → 가온이 패배. */
+export function gaonNextWord(prevWord: string, used: Set<string>): string | null {
   const last = prevWord.trim().slice(-1);
   const pool = (CHAIN_WORDS[last] ?? []).filter((w) => !used.has(w));
   if (pool.length === 0) return null;

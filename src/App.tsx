@@ -1,5 +1,5 @@
-// 사랑이 — 화면 상태 기계.
-// 원칙(스펙 5절): 사랑이는 놀이가 정해진 뒤에만 등장한다. 놀이 선택 화면까지는 캐릭터가 없다.
+// 가온이 — 화면 상태 기계.
+// 원칙(스펙 5절): 가온이는 놀이가 정해진 뒤에만 등장한다. 놀이 선택 화면까지는 캐릭터가 없다.
 import { useRef, useState, type ChangeEvent } from "react";
 import { GAME_META, isNewGame, type Adult, type GameId, type GameKind } from "./lib/state";
 import { loadFamilyPhoto, saveFamilyPhoto } from "./lib/familyPhoto";
@@ -49,25 +49,25 @@ export function App() {
     setScreen("gate");
   }
 
-  // 사랑이의 등장 대사·역할 — 놀이가 정해진 뒤에야 정해진다
+  // 가온이의 등장 대사·역할 — 놀이가 정해진 뒤에야 정해진다
   function introFor(game: GameId, adultCount: number) {
     if (game === "mugunghwa") {
-      return { face: "host", prop: "🎤", chip: "🎤 오늘 사랑이는 사회자", jsx: <>“무궁화꽃이 피었습니다!<br />구호는 내가 외칠게.<br /><b>술래는 누가 할래?</b>”</>, tts: "무궁화꽃이 피었습니다, 하자! 구호는 내가 외칠게. 술래는 누가 할래?" };
+      return { face: "host", prop: "🎤", chip: "🎤 오늘 가온이는 사회자", jsx: <>“무궁화꽃이 피었습니다!<br />구호는 내가 외칠게.<br /><b>술래는 누가 할래?</b>”</>, tts: "무궁화꽃이 피었습니다, 하자! 구호는 내가 외칠게. 술래는 누가 할래?" };
     }
     if (game === "bodytalk") {
-      return { face: "host", prop: "🎤", chip: "🎤 오늘 사랑이는 사회자", jsx: <>“몸으로 말해요!<br />문제는 내가 낼게.<br /><b>입으로 말하면 반칙이야!</b>”</>, tts: "몸으로 말해요, 하자! 문제는 내가 낼게. 입으로 말하면 반칙이야!" };
+      return { face: "host", prop: "🎤", chip: "🎤 오늘 가온이는 사회자", jsx: <>“몸으로 말해요!<br />문제는 내가 낼게.<br /><b>입으로 말하면 반칙이야!</b>”</>, tts: "몸으로 말해요, 하자! 문제는 내가 낼게. 입으로 말하면 반칙이야!" };
     }
-    // 끝말잇기 — 사람이 셋 이상이면 사랑이는 놀이 친구 자리를 비운다 (사람이 먼저)
+    // 끝말잇기 — 사람이 셋 이상이면 가온이는 놀이 친구 자리를 비운다 (사람이 먼저)
     if (adultCount >= 2) {
-      return { face: "host", prop: "🎤", chip: "🎤 오늘 사랑이는 사회자", jsx: <>“어른이 두 명이네!<br />그럼 나는 구경할게.<br /><b>셋이서 돌아가면서 해요!</b>”</>, tts: "어른이 두 명이네! 그럼 나는 구경할게. 셋이서 돌아가면서 해요!" };
+      return { face: "host", prop: "🎤", chip: "🎤 오늘 가온이는 사회자", jsx: <>“어른이 두 명이네!<br />그럼 나는 구경할게.<br /><b>셋이서 돌아가면서 해요!</b>”</>, tts: "어른이 두 명이네! 그럼 나는 구경할게. 셋이서 돌아가면서 해요!" };
     }
-    return { face: "", prop: "🙋", chip: "🙋 오늘 사랑이는 놀이 친구", jsx: <>“끝말잇기!<br />나도 껴 줘.<br /><b>아이부터 시작하자!</b>”</>, tts: "끝말잇기, 하자! 나도 껴 줘. 아이부터 시작하자!" };
+    return { face: "", prop: "🙋", chip: "🙋 오늘 가온이는 놀이 친구", jsx: <>“끝말잇기!<br />나도 껴 줘.<br /><b>아이부터 시작하자!</b>”</>, tts: "끝말잇기, 하자! 나도 껴 줘. 아이부터 시작하자!" };
   }
 
   function pickGame(game: GameId) {
     setSession({ adults, game, startedAt: Date.now() });
     if (game === "hospital" || game === "police") {
-      // 역할놀이의 사랑이는 가이드 — 아이 앞에 나타나지 않으므로 소개 화면 없이 어른 전용 게이트로 간다
+      // 역할놀이의 가온이는 가이드 — 아이 앞에 나타나지 않으므로 소개 화면 없이 어른 전용 게이트로 간다
       setScreen("play");
     } else {
       setScreen("intro");
@@ -78,7 +78,7 @@ export function App() {
   if (screen === "gate") {
     return (
       <main className="screen">
-        <div className="topline"><span>사랑이</span><span>같이 논 시간이 꽃이 돼요</span></div>
+        <div className="topline"><span>가온이</span><span>같이 논 시간이 꽃이 돼요</span></div>
         <div className="grow" style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 16 }}>
           {familyPhoto ? (
             <div className="famcard">
@@ -161,7 +161,7 @@ export function App() {
             </div>
           ))}
         </div>
-        <p className="notebox" style={{ textAlign: "center" }}>여기까지 사랑이는 나오지 않아요 — 놀이가 정해져야 등장해요</p>
+        <p className="notebox" style={{ textAlign: "center" }}>여기까지 가온이는 나오지 않아요 — 놀이가 정해져야 등장해요</p>
       </main>
     );
   }
@@ -170,7 +170,7 @@ export function App() {
     const intro = introFor(session.game, session.adults.length);
     return (
       <main className="screen">
-        <div className="topline"><span>사랑이 등장</span><button onClick={goHome}>처음으로</button></div>
+        <div className="topline"><span>가온이 등장</span><button onClick={goHome}>처음으로</button></div>
         <div className="grow" style={{ display: "grid", alignContent: "center" }}>
           <div className={`loveface ${intro.face}`}>💗<span className="prop">{intro.prop}</span></div>
           <span className="rolechip">{intro.chip}</span>

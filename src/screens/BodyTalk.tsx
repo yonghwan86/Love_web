@@ -1,4 +1,4 @@
-// 몸으로 말해요 — 사랑이는 사회자. 문제를 내고 정답 공개만 한다.
+// 몸으로 말해요 — 가온이는 사회자. 문제를 내고 정답 공개만 한다.
 // 표현과 추측은 전부 사람이 한다. 점수는 없다 (1차 원칙: 개인 점수 금지).
 import { useEffect, useRef, useState } from "react";
 import { BODYTALK_WORDS, type BodyWord } from "../lib/words";
@@ -88,7 +88,7 @@ export function BodyTalk({ adults, onFinish }: Props) {
       <main className="screen">
         <div className="topline"><span>🕺 몸으로 말해요 · {round}번째</span></div>
         <h1 className="title center">누가 몸으로<br />말할까?</h1>
-        <p className="sub center">문제는 사랑이가 내요 — 맞히는 건 나머지 사람!</p>
+        <p className="sub center">문제는 가온이가 내요 — 맞히는 건 나머지 사람!</p>
         <div className="grow" style={{ display: "grid", alignContent: "center", gap: 14 }}>
           <div className="chips" style={{ gridTemplateColumns: `repeat(${Math.min(adults.length + 1, 3)}, 1fr)` }}>
             {adults.map((a) => (
@@ -130,7 +130,7 @@ export function BodyTalk({ adults, onFinish }: Props) {
   if (phase === "acting" && word) {
     return (
       <main className="screen">
-        <div className="topline"><span>🎤 사회자 — 사랑이</span><span>{performer}가 표현 중</span></div>
+        <div className="topline"><span>🎤 사회자 — 가온이</span><span>{performer}가 표현 중</span></div>
         <div className="grow" style={{ display: "grid", alignContent: "center", textAlign: "center", gap: 10 }}>
           <div style={{ fontSize: 74, fontWeight: 900, letterSpacing: "-0.05em", color: left <= 10 ? "var(--kill)" : "var(--ink)" }}>
             {left}
