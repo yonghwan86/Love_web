@@ -4,6 +4,7 @@ wiggle_web에서 파생된 신규 제품. **1차(놀이 5종)가 구현·배포�
 
 | 문서 | 내용 |
 | --- | --- |
+| [00-status.md](docs/00-status.md) | **구현 현황 · 남은 일 한 장 정리 (여기부터 읽기)** |
 | [mockup.html](docs/mockup.html) | 발표용 시각 목업 (브라우저로 열 것) |
 | [01-phase1-spec.md](docs/01-phase1-spec.md) | 1차 스펙 — 5~9세, 키링 NFC + 놀이별 역할 AI |
 | [02-phase2-plan.md](docs/02-phase2-plan.md) | 2차 계획 — 10~18세, 큰 화면 공유 (착수 안 함) |
