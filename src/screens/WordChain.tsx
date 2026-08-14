@@ -3,8 +3,9 @@
 // 순서: 아이 → 어른 → 가온이 → 아이 … 가온이의 단어는 아이가 잇기 쉬운 글자로 끝난다.
 import { useEffect, useRef, useState } from "react";
 import { gaonNextWord } from "../lib/words";
-import { listenOnce, sttAvailable } from "../lib/stt";
+import { sttAvailable } from "../lib/stt";
 import { speak, stopSpeak } from "../lib/tts";
+import { VoiceButton } from "../components/VoiceButton";
 import type { Adult } from "../lib/state";
 
 type Props = {
@@ -19,7 +20,6 @@ export function WordChain({ adults, onFinish }: Props) {
   const [turn, setTurn] = useState<Turn>("child");
   const [gaonWord, setGaonWord] = useState<string | null>(null);
   const [adultInput, setAdultInput] = useState("");
-  const [listening, setListening] = useState(false);
   const [lost, setLost] = useState(false);
   const usedRef = useRef(new Set<string>());
   const adultLabel = adults.length === 1 ? adults[0] : "어른";
@@ -30,13 +30,6 @@ export function WordChain({ adults, onFinish }: Props) {
   useEffect(() => {
     if (spectate) void speak("첫 단어는 내가 줄게. 사과! 과부터 시작이야. 아이부터!");
   }, [spectate]);
-
-  async function micFill() {
-    setListening(true);
-    const heard = await listenOnce();
-    setListening(false);
-    if (heard) setAdultInput(heard.replace(/\s/g, ""));
-  }
 
   function gaonTurn() {
     const prev = adultInput.trim().replace(/\s/g, "");
@@ -113,21 +106,17 @@ export function WordChain({ adults, onFinish }: Props) {
         {turn === "adult" && (
           <>
             <div className="notebox" style={{ textAlign: "center", fontSize: 16 }}>
-              🧑‍🦱 <b>{adultLabel} 차례</b> — 말하고, 단어를 적어 주세요
+              🧑‍🦱 <b>{adultLabel} 차례</b> — {sttAvailable() ? "단어를 말하면 가온이가 받아 적어요" : "말하고, 단어를 적어 주세요"}
             </div>
+            <VoiceButton big label="🎤 말로 넣기" onText={(t) => setAdultInput(t.replace(/\s/g, "").slice(0, 10))} />
             <input
               className="quoteinput"
-              placeholder={`${adultLabel}이 말한 단어`}
+              placeholder={sttAvailable() ? "잘못 들었으면 여기서 고쳐요" : `${adultLabel}이 말한 단어`}
               value={adultInput}
               maxLength={10}
               onChange={(e) => setAdultInput(e.target.value)}
             />
-            {sttAvailable() && (
-              <button className="ghost" onClick={micFill} disabled={listening}>
-                {listening ? "👂 듣는 중…" : "🎤 말로 넣기"}
-              </button>
-            )}
-            <button className="big" disabled={!adultInput.trim()} onClick={gaonTurn}>
+            <button className="big love" disabled={!adultInput.trim()} onClick={gaonTurn}>
               가온이 차례로!
             </button>
           </>
@@ -136,7 +125,7 @@ export function WordChain({ adults, onFinish }: Props) {
           <button className="big love" onClick={() => setTurn("child")}>들었어! 아이 차례</button>
         )}
       </div>
-      <p className="notebox">가온이가 적는 걸 부탁하는 건 {adultLabel} 단어 하나뿐이에요 — 아이 단어는 귀로만 들어요.</p>
+      <p className="notebox">가온이한테 알려줄 건 {adultLabel} 단어 하나뿐 — 말로 하거나, 안 되면 적어요. 아이 단어는 귀로만 들어요.</p>
     </main>
   );
 }

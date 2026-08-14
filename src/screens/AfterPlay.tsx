@@ -13,6 +13,7 @@ import {
 } from "../lib/state";
 import { GAME_META } from "../lib/state";
 import { speak, stopSpeak } from "../lib/tts";
+import { VoiceButton } from "../components/VoiceButton";
 
 type Props = {
   game: GameId;
@@ -51,7 +52,7 @@ export function AfterPlay({ game, adults, photo, onDone }: Props) {
         setDrops(result.drops);
         if (result.drops >= 10) {
           setTimeout(() => setShowBloom(true), 1100);
-          void speak("꽃이 피었어요!");
+          void speak("꽃이 피었어요! 아이가 꽃 이름을 말해 줄래?");
         } else {
           void speak(result.gained === 2 ? "처음 하는 놀이라 두 방울!" : "물 한 방울, 쑥쑥 자라라!");
         }
@@ -132,10 +133,11 @@ export function AfterPlay({ game, adults, photo, onDone }: Props) {
             <small>
               열 번 같이 놀아서 핀 꽃이에요.<br />아이가 이름을 지어 줄래요?
             </small>
+            <VoiceButton big label="🎤 아이가 말한 이름 넣기" onText={(t) => setFlowerName(t.replace(/\s/g, "").slice(0, 12))} />
             <input
               className="nameinput"
               maxLength={12}
-              placeholder="꽃 이름"
+              placeholder="또는 여기에 적어요"
               value={flowerName}
               onChange={(e) => setFlowerName(e.target.value)}
             />
@@ -163,6 +165,7 @@ export function AfterPlay({ game, adults, photo, onDone }: Props) {
             onChange={(e) => setQuote(e.target.value)}
           />
         </div>
+        <VoiceButton label="🎤 아이 말, 말로 남기기" onText={(t) => setQuote(t.slice(0, 40))} />
         <button className={`stampbtn${stamped ? " done" : ""}`} onClick={() => setStamped(true)}>
           <span className="st">🏅</span>
           <b>{stamped ? "도장 찍었다! 오늘 어른 참 잘했어요" : `아이가 ${adults.join("·")}에게 도장 찍어 주기`}</b>
